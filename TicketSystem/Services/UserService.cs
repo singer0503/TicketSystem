@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketSystem.Entities;
@@ -17,13 +20,27 @@ namespace TicketSystem.Services
     // 繼承就要實作
     public class UserService : IUserService
     {
+        private readonly string _connectionString;
+        public UserService(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConn");
+        }
         public User Authenticate(string username, string password)
         {
+
             throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetAll()
         {
+
+            var sqlQuery = "SELECT * FROM [User]";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Query<User>(sqlQuery);
+            }
+
             throw new NotImplementedException();
         }
 
