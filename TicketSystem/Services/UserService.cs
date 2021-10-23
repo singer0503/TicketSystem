@@ -1,11 +1,17 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TicketSystem.Entities;
+using TicketSystem.Helpers;
 
 namespace TicketSystem.Services
 {
@@ -21,26 +27,57 @@ namespace TicketSystem.Services
     public class UserService : IUserService
     {
         private readonly string _connectionString;
-        public UserService(IConfiguration configuration)
+        private readonly AppSettings _appSettings;
+
+        //DI
+        public UserService(IConfiguration configuration, IOptions<AppSettings> appSettings)
         {
             _connectionString = configuration.GetConnectionString("DefaultConn");
+            _appSettings = appSettings.Value;
         }
         public User Authenticate(string username, string password)
         {
+            var sqlQuery = "SELECT * FROM [User] where [Username] = @Username and [Password] = @Password";
+            User user =new User();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                user = connection.Query<User>(sqlQuery, new {
+                    Username = username,
+                    Password = password
+                }).FirstOrDefault();
+            }
+            // return null if user not found
+            if (user == null)
+                return null;
 
-            throw new NotImplementedException();
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            user.Token = tokenHandler.WriteToken(token);
+
+            return user.WithoutPassword();
+
+            //throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetAll()
         {
-
             var sqlQuery = "SELECT * FROM [User]";
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 return connection.Query<User>(sqlQuery);
             }
-
             throw new NotImplementedException();
         }
 
