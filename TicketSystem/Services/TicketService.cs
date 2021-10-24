@@ -26,8 +26,26 @@ namespace TicketSystem.Services
 
         }
 
-        public TicketData Create(TicketData book)
+        public TicketData Create(TicketData ticketData)
         {
+            if (String.IsNullOrEmpty(ticketData.Summary) || String.IsNullOrEmpty(ticketData.Description) || String.IsNullOrEmpty(ticketData.Type)) {
+                return null;
+            }
+
+            var sqlQuery = "INSERT INTO [TicketData]([Summary], [Description], [Type], [Status]) VALUES (@Summary, @Description, @Type, @Status)";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(sqlQuery, new
+                {
+                    Summary = ticketData.Summary,
+                    Description = ticketData.Description,
+                    Type = ticketData.Type,
+                    Status = "Open"
+                });
+
+                return ticketData;
+            }
             throw new NotImplementedException();
         }
 
