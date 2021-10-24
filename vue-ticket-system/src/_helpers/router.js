@@ -34,19 +34,19 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    // redirect to login page if not logged in and trying to access a restricted page
+    // 如果未登錄並嘗試訪問受限頁面，則重定向到登錄頁面
     const { authorize } = to.meta;
     const currentUser = authenticationService.currentUserValue;
 
     if (authorize) {
         if (!currentUser) {
-            // not logged in so redirect to login page with the return url
+            // 未登錄，因此使用返回 url 重定向到登錄頁面
             return next({ path: '/login', query: { returnUrl: to.path } });
         }
 
-        // check if route is restricted by role
+        // 檢查該頁面的路由，是否有 角色限制
         if (authorize.length && !authorize.includes(currentUser.role)) {
-            // role not authorised so redirect to home page
+            // 角色未授權 所以重定向到主頁
             return next({ path: '/' });
         }
     }

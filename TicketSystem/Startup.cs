@@ -61,6 +61,7 @@ namespace TicketSystem
 
             // °t¸m DI services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITicketService, TicketService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +69,7 @@ namespace TicketSystem
         {
             app.UseRouting();
 
-            // global cors policy
+            // CORS ¥þ¶}
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()

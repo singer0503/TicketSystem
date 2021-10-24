@@ -1,10 +1,11 @@
 <template>
     <div>
         <div class="alert alert-info">
-            <strong>角色</strong> ：帳號/密碼<br />
+            <strong>角色</strong> ：使用者/密碼<br />
             <strong>Admin</strong> ：admin/admin<br />
             <strong>RD</strong> ：rd/rd<br />
-            <strong>QA</strong> ：qa/qa
+            <strong>QA</strong> ：qa/qa<br />
+            <strong>PM</strong> ：pm/pm
         </div>
         <h2>請進行登入</h2>
         <form @submit.prevent="onSubmit">
@@ -62,13 +63,11 @@ export default {
     methods: {
         onSubmit () {
             this.submitted = true;
-
             // 如果表單無效, 停在這 debug
             this.$v.$touch();
             if (this.$v.$invalid) {
                 return;
             }
-
             this.loading = true;
             authenticationService.login(this.username, this.password)
                 .then(
