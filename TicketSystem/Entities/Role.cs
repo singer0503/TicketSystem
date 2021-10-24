@@ -9,5 +9,8 @@ namespace TicketSystem.Entities
     {
         public const string Admin = "Admin";
         public const string User = "User";
+        public const string QA = "QA";
+        public const string RD = "RD";
+        public const string PM = "PM";
     }
 }

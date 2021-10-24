@@ -46,21 +46,21 @@ namespace TicketSystem.Services
                     Password = password
                 }).FirstOrDefault();
             }
-            // return null if user not found
+            // 如果找不到使用者
             if (user == null)
                 return null;
 
-            // authentication successful so generate jwt token
+            // 驗證成功, 產生 jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),  // 放入 id
+                    new Claim(ClaimTypes.Role, user.Role)   // 放入角色
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -83,7 +83,15 @@ namespace TicketSystem.Services
 
         public User GetById(int id)
         {
-            throw new NotImplementedException();
+            var sqlQuery = "SELECT * FROM [User] where [Id] = @Id";
+            User user = new User();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return user = connection.Query<User>(sqlQuery, new
+                {
+                    Id = id
+                }).FirstOrDefault();
+            }
         }
     }
 }
