@@ -4,7 +4,7 @@
 
 目前的結果
 
-![動畫2.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3018b9e1-943c-4b3a-b742-61cb784e80a6/動畫2.gif)
+![動畫2.gif](https://grizzled-coat-756.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3018b9e1-943c-4b3a-b742-61cb784e80a6%2F%E5%8B%95%E7%95%AB2.gif?table=block&id=98572ddb-e2b4-4ebf-92cc-8fe216de7847&spaceId=9923dfc3-318e-4dec-aaef-cfd17e7f129b&userId=&cache=v2)
 
 ## 目錄結構說明
 
