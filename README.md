@@ -27,8 +27,6 @@
 git clone https://github.com/singer0503/TicketSystem
 ```
 
-設定後端與 SQL Server 資料庫連接字串，設定檔案 appsettings.json
-
 設定後端與 SQL Server 資料庫連接字串，設定檔案 `appsettings.json`
 
 ```bash
@@ -45,13 +43,13 @@ cd TicketSystem
 dotnet restore TicketSystem.csproj
 ```
 
-執行後端 backend start
+執行後端專案 backend start
 
 ```bash
 dotnet run
 ```
 
-進入
+返回至前端目錄執行套件還原
 
 ```bash
 cd ..
@@ -59,7 +57,9 @@ cd vue-ticket-system
 npm install
 ```
 
-```bash
+設定連接後端 .Net Core 的 URL  `webpack.config.js`
+
+```jsx
 //...在最下方
 externals: {
     // global app config object
@@ -72,6 +72,8 @@ externals: {
 
 執行前端專案
 
-```bash
+```jsx
 npm start
 ```
+
+## 程式架構說明
