@@ -36,7 +36,7 @@ export const requestOptions = {
     }
 }
 
-// 在接下來的的 request header 加入 Authorization : Bearer + 拿到的 JWT token
+// 在接下來的的 request header 都加上 Authorization : Bearer + 拿到的 JWT token
 function headers() {
     const currentUser = authenticationService.currentUserValue || {};
     const authHeader = currentUser.token ? { 'Authorization': 'Bearer ' + currentUser.token } : {}

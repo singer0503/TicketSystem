@@ -7,7 +7,7 @@
             <strong>QA</strong> ：qa/qa<br />
             <strong>PM</strong> ：pm/pm
         </div>
-        <h2>請進行登入</h2>
+        <h2>Ticket System 登入</h2>
         <form @submit.prevent="onSubmit">
             <div class="form-group">
                 <label for="username">使用者</label>

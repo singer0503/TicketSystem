@@ -12,7 +12,6 @@ namespace TicketSystem.Services
     public interface ITicketService
     {
         IEnumerable<TicketData> Get();
-        TicketData Get(int id);
         TicketData Create(TicketData book);
         int Update(TicketData book);
         int Delete(int id);
@@ -49,11 +48,6 @@ namespace TicketSystem.Services
             throw new NotImplementedException();
         }
 
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<TicketData> Get()
         {
             var sqlQuery = "SELECT * FROM [TicketData]";
@@ -64,13 +58,36 @@ namespace TicketSystem.Services
             throw new NotImplementedException();
         }
 
-        public TicketData Get(int id)
+
+
+        public int Update(TicketData ticketData)
         {
+            if (String.IsNullOrEmpty(ticketData.Summary) || String.IsNullOrEmpty(ticketData.Description) || ticketData.Id ==0)
+            {
+                return 0;
+            }
+            var sqlQuery = "UPDATE [TicketData] SET Summary=@Summary, Description=@Description WHERE Id=@Id";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Execute(sqlQuery, new
+                {
+
+                    ticketData.Summary,
+                    ticketData.Description,
+                    ticketData.Id,
+                });
+            }
             throw new NotImplementedException();
         }
-
-        public int Update(TicketData book)
+        public int Delete(int id)
         {
+            var sqlQuery = "DELETE from [TicketData] WHERE Id=@id";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Execute(sqlQuery, new { Id = id });
+            }
             throw new NotImplementedException();
         }
     }

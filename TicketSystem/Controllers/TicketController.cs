@@ -10,7 +10,7 @@ using TicketSystem.Services;
 
 namespace TicketSystem.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TicketController : ControllerBase
@@ -30,7 +30,7 @@ namespace TicketSystem.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Role.Admin+","+ Role.QA)]
+        [Authorize(Roles = Role.Admin+","+ Role.QA + "," +Role.PM)]
         public JsonResult Post(TicketData ticketData)
         {
             var newTicketData = _ticketService.Create(ticketData);
@@ -39,6 +39,49 @@ namespace TicketSystem.Controllers
             }
 
             return new JsonResult("Added Successfully");
+        }
+
+        [HttpPut]
+        [Authorize(Roles = Role.Admin + "," + Role.QA + "," + Role.PM)]
+        public JsonResult Put(TicketData ticketData)
+        {
+            
+            int result = _ticketService.Update(ticketData);
+            if (result == 0)
+            {
+                return new JsonResult("fail, please check Summary / Description ");
+            }
+
+            //return NoContent();
+            return new JsonResult("Updated Successfully");
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = Role.Admin + "," + Role.QA + "," + Role.PM)]
+        public JsonResult Delete(int id)
+        {
+            int result = _ticketService.Delete(id);
+            if (result == 0)
+            {
+                return new JsonResult("fail ");
+            }
+            return new JsonResult("Deleted Successfully");
+        }
+
+        [HttpPut]
+        [Route("Resolve")]
+        [Authorize(Roles = Role.RD)]
+        public JsonResult PutResolve(TicketData ticketData)
+        {
+
+            int result = _ticketService.Update(ticketData);
+            if (result == 0)
+            {
+                return new JsonResult("fail, please check Summary / Description ");
+            }
+
+            //return NoContent();
+            return new JsonResult("Updated Successfully");
         }
     }
 }

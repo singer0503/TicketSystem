@@ -46,17 +46,23 @@ namespace TicketSystem.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            // only allow admins to access other user records
-            var currentUserId = int.Parse(User.Identity.Name);
-            if (id != currentUserId && !User.IsInRole(Role.Admin))
+            try
+            {
+                // 只允許 Admin 訪問其他使用者資料
+                var currentUserId = int.Parse(User.Identity.Name); // 解出 JWT id
+                if (id != currentUserId && !User.IsInRole(Role.Admin))
+                    return Forbid(); // return 403
+
+                var user = _userService.GetById(id);
+
+                if (user == null)
+                    return NotFound();
+
+                return Ok(user);
+            }
+            catch (Exception) {
                 return Forbid();
-
-            var user = _userService.GetById(id);
-
-            if (user == null)
-                return NotFound();
-
-            return Ok(user);
+            }
         }
     }
 }
