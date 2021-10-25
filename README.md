@@ -10,9 +10,9 @@
 
 `SQLscript` 該資料夾存放建立 SQL 所需的 Script 
 
-`TicketSystem` 後端程式碼
+`TicketSystem` 後端程式碼 (Net Core 3.1)
 
-`vue-ticket-system` 前端程式碼
+`vue-ticket-system` 前端程式碼 (Vue.js 2)
 
 ### **Quick start 快速開始**
 
@@ -25,7 +25,9 @@
 git clone https://github.com/singer0503/TicketSystem
 ```
 
-設定與 SQL Server 資料庫連接字串，設定檔案 appsettings.json
+設定後端與 SQL Server 資料庫連接字串，設定檔案 appsettings.json
+
+設定後端與 SQL Server 資料庫連接字串，設定檔案 `appsettings.json`
 
 ```bash
 cd TicketSystem
@@ -45,4 +47,29 @@ dotnet restore TicketSystem.csproj
 
 ```bash
 dotnet run
+```
+
+進入
+
+```bash
+cd ..
+cd vue-ticket-system
+npm install
+```
+
+```bash
+//...在最下方
+externals: {
+    // global app config object
+    config: JSON.stringify({
+        //apiUrl: 'http://localhost:4000'
+        apiUrl: 'https://localhost:44337'
+    })
+}
+```
+
+執行前端專案
+
+```bash
+npm start
 ```
