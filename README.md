@@ -8,6 +8,8 @@
 
 ## 目錄結構說明
 
+![TicketSysTem-程式架構圖.png](https://grizzled-coat-756.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F064612aa-5d67-48bd-bf1b-ef33d56eab1e%2FTicketSysTem-%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E5%9C%96.png?table=block&id=8eb00f39-ecc4-44e3-9ab3-153dcfcc4b24&spaceId=9923dfc3-318e-4dec-aaef-cfd17e7f129b&width=1720&userId=&cache=v2)
+
 `SQLscript` 該資料夾存放建立 SQL 所需的 Script 
 
 `TicketSystem` 後端程式碼 (Net Core 3.1)
