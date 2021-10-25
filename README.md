@@ -8,13 +8,13 @@
 
 ## 目錄結構說明
 
-![TicketSysTem-程式架構圖.png](https://grizzled-coat-756.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb9557db3-8eca-4b4a-a534-d360e23cc662%2FTicketSysTem-%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E5%9C%96_(1).png?table=block&id=c3b56066-5856-4b4c-bf39-66fa1abe1852&spaceId=9923dfc3-318e-4dec-aaef-cfd17e7f129b&width=1720&userId=&cache=v2)
+![TicketSysTem-目錄架構圖.png](https://grizzled-coat-756.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb9557db3-8eca-4b4a-a534-d360e23cc662%2FTicketSysTem-%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E5%9C%96_(1).png?table=block&id=c3b56066-5856-4b4c-bf39-66fa1abe1852&spaceId=9923dfc3-318e-4dec-aaef-cfd17e7f129b&width=1720&userId=&cache=v2)
 
-`SQLscript` 該資料夾存放建立 SQL 所需的 Script 
+`vue-ticket-system` 前端程式碼 (Vue.js 2)
 
 `TicketSystem` 後端程式碼 (Net Core 3.1)
 
-`vue-ticket-system` 前端程式碼 (Vue.js 2)
+`SQLscript` 該資料夾存放建立 SQL 所需的 Script
 
 ### **Quick start 快速開始**
 
