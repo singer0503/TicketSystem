@@ -5,7 +5,8 @@ export const ticketService = {
     getTicket,
     postTicket,
     putTicket,
-    deleteTicket
+    deleteTicket,
+    resolveTicket
 };
 
 function getTicket() {
@@ -23,5 +24,9 @@ function putTicket(Summary, Description, Id) {
 }
 function deleteTicket(Id) {
     return fetch(`${config.apiUrl}/ticket/` + Id, requestOptions.delete())
+        .then(handleResponse);
+}
+function resolveTicket(Id) {
+    return fetch(`${config.apiUrl}/ticket/Resolve`, requestOptions.put({ Id }))
         .then(handleResponse);
 }

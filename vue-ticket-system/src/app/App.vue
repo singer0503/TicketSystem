@@ -3,7 +3,7 @@
         <nav v-if="currentUser" class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
                 <router-link to="/" class="nav-item nav-link">首頁</router-link>
-                <router-link v-if="isAdmin" to="/admin" class="nav-item nav-link">Admin</router-link>
+                <router-link v-if="isAdmin" to="/admin" class="nav-item nav-link">管理使用者</router-link>
                 <a @click="logout" class="nav-item nav-link">登出</a>
             </div>
         </nav>

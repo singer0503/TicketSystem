@@ -21,6 +21,9 @@ namespace TicketSystem.Services
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
         User GetById(int id);
+        User Create(User user);
+        int Update(User user);
+        int Delete(int id);
     }
 
     // 繼承就要實作
@@ -71,6 +74,7 @@ namespace TicketSystem.Services
             //throw new NotImplementedException();
         }
 
+
         public IEnumerable<User> GetAll()
         {
             var sqlQuery = "SELECT * FROM [User]";
@@ -93,5 +97,62 @@ namespace TicketSystem.Services
                 }).FirstOrDefault();
             }
         }
+        public User Create(User user)
+        {
+            if (String.IsNullOrEmpty(user.Username) || String.IsNullOrEmpty(user.Password) || String.IsNullOrEmpty(user.Role) 
+                || String.IsNullOrEmpty(user.FirstName) || String.IsNullOrEmpty(user.LastName))
+            {
+                return null;
+            }
+            var sqlQuery = "INSERT INTO [User] VALUES (@Username, @Password, @Role, @FirstName, @LastName)";
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(sqlQuery, new
+                {
+                    user.Username,
+                    user.Password,
+                    user.Role,
+                    user.FirstName,
+                    user.LastName
+                });
+                return user;
+            }
+            throw new NotImplementedException();
+        }
+
+        public int Update(User user)
+        {
+            if (String.IsNullOrEmpty(user.Username) || String.IsNullOrEmpty(user.Password) || String.IsNullOrEmpty(user.Role)
+                || String.IsNullOrEmpty(user.FirstName) || String.IsNullOrEmpty(user.LastName) || user.Id ==0)
+            {
+                return 0;
+            }
+            var sqlQuery = "UPDATE [User] SET Username=@Username, Password=@Password, Role=@Role, FirstName=@FirstName, LastName=@LastName WHERE Id=@Id";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Execute(sqlQuery, new
+                {
+                    user.Username,
+                    user.Password,
+                    user.Role,
+                    user.FirstName,
+                    user.LastName,
+                    user.Id
+                });
+            }
+        }
+
+        public int Delete(int id)
+        {
+            var sqlQuery = "DELETE from [User] WHERE Id=@id";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Execute(sqlQuery, new { Id = id });
+            }
+            throw new NotImplementedException();
+        }
+
     }
 }

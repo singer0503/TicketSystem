@@ -58,11 +58,14 @@
                             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                             </svg>
                         </button>
-                        <button  type="button" class="btn btn-light mr-1" v-if="isResolve" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
-                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                            <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
-                            </svg>
-                        </button>
+                        <template v-if="ticket.status !== 'Resolve'">
+                            <button  type="button" @click="resolveClick(ticket.id)" v-if="isResolve"
+                            class="btn btn-light mr-1" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                                </svg>
+                            </button>
+                        </template>
                     </td>
                 </tr>
             </tbody>
@@ -88,7 +91,7 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Type</span>
-                            <input type="text" class="form-control" v-model="Type" :disabled="TypeDisabled == 1">
+                            <input type="text" class="form-control" v-model="Type" >
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Status</span>
@@ -108,8 +111,6 @@
         </div>
 
     </div>
-
-    
 </template>
 
 <script>
@@ -120,7 +121,7 @@ export default {
     data () {
         return {
             currentUser: authenticationService.currentUserValue,
-            userFromApi: null,
+            // userFromApi: null,
             ticketData: [], 
             modalTitle:"",
             Summary:"",
@@ -130,7 +131,7 @@ export default {
             ticketId:0,
             TypeDisabled:0
         };
-    },computed: {
+    },computed: { // 計算屬性
         isAddUpdateDelete () { //檢查 Add Update Delete 權限
             console.log(this.currentUser) // 必須要有資料
             console.log(this.currentUser.role) // 角色
@@ -140,8 +141,8 @@ export default {
             return this.currentUser.role === Role.RD || this.currentUser.role === Role.Admin;
         }
     },
-    created () {
-        userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
+    created() {
+        //userService.getById(this.currentUser.id).then(user => this.userFromApi = user);
         ticketService.getTicket().then(Ticket => this.ticketData = Ticket);
 
     },methods: {
@@ -181,11 +182,22 @@ export default {
                 alert(response);
                 this.refreshData();
             });
-        },deleteClick(id){
-            if(!confirm("Are you sure?")){
+        },
+        deleteClick(id){
+            if(!confirm("[Delete] Are you sure?")){
                 return;
             }
             ticketService.deleteTicket(id).then(response => {
+                alert(response);
+                this.refreshData();
+            });
+        },
+        resolveClick(id){
+            console.log(id)
+            if(!confirm("[Resolve] Are you sure?")){
+                return;
+            }
+            ticketService.resolveTicket(id).then(response => {
                 alert(response);
                 this.refreshData();
             });

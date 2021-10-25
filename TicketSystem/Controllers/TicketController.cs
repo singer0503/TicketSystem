@@ -70,18 +70,15 @@ namespace TicketSystem.Controllers
 
         [HttpPut]
         [Route("Resolve")]
-        [Authorize(Roles = Role.RD)]
+        [Authorize(Roles = Role.Admin + "," + Role.RD)]
         public JsonResult PutResolve(TicketData ticketData)
         {
-
-            int result = _ticketService.Update(ticketData);
+            int result = _ticketService.Resolve(ticketData.Id);
             if (result == 0)
             {
-                return new JsonResult("fail, please check Summary / Description ");
+                return new JsonResult("Resolve fail ");
             }
-
-            //return NoContent();
-            return new JsonResult("Updated Successfully");
+            return new JsonResult("Resolve Successfully");
         }
     }
 }

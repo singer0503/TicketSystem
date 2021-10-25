@@ -15,6 +15,7 @@ namespace TicketSystem.Services
         TicketData Create(TicketData book);
         int Update(TicketData book);
         int Delete(int id);
+        int Resolve(int id);
     }
     public class TicketService : ITicketService
     {
@@ -87,6 +88,20 @@ namespace TicketSystem.Services
             using (var connection = new SqlConnection(_connectionString))
             {
                 return connection.Execute(sqlQuery, new { Id = id });
+            }
+            throw new NotImplementedException();
+        }
+
+        public int Resolve(int id)
+        {
+            if (id == 0)
+            {
+                return 0;
+            }
+            var sqlQuery = "UPDATE [TicketData] SET Status='Resolve' WHERE Id=@Id";
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.Execute(sqlQuery, new{ id });
             }
             throw new NotImplementedException();
         }
